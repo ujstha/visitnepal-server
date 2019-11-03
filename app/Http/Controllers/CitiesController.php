@@ -19,20 +19,18 @@ class CitiesController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
+        $validData = $request->validate([
+            'name' => 'required|unique:cities',
             'description' => 'required'
         ]);
 
-        try {
+        if ($validData) {
             $city = new City;
             $city->name = $request->input('name');
             $city->description = $request->input('description');
             $city->save();
-
+    
             return response()->json(['message' => 'Data Inserted Successfully']);
-        } catch (QueryException $e) { // It's actually a QueryException but this works too
-            abort(500, 'Unsuccessful to Insert the Data.');
         }
     }
 
@@ -54,7 +52,7 @@ class CitiesController extends Controller
         $city->description = $request->input('description');
         $city->save();
 
-       return response()->json('Data with an ID of '.$id.' Updated Successfully');
+        return response()->json(['message' => 'Data with an ID of '.$id.' was Updated Successfully']);
     }
 
     public function destroy($id)
@@ -62,6 +60,6 @@ class CitiesController extends Controller
         $city = City::findOrFail($id);
         $city->delete();
 
-        return response()->json('Data with an ID of '.$id.' Deleted Successfully');
+        return response()->json(['message' => 'Data with an ID of '.$id.' was Deleted Successfully']);
     }
 }
