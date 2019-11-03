@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use App\Http\Requests;
 use App\City;
 use DB;
@@ -23,13 +24,15 @@ class CitiesController extends Controller
             'description' => 'required'
         ]);
 
-        $city = new City;
-        $city->name = $request->input('name');
-        $city->description = $request->input('description');
-        if($city->save()) {
-            return response()->json('Data Inserted Successfully');
-        } else {
-            return response()->json('Unsuccessful to Insert the data');
+        try {
+            $city = new City;
+            $city->name = $request->input('name');
+            $city->description = $request->input('description');
+            $city->save();
+
+            return response()->json(['message' => 'Data Inserted Successfully']);
+        } catch (QueryException $e) { // It's actually a QueryException but this works too
+            abort(500, 'Unsuccessful to Insert the Data.');
         }
     }
 
