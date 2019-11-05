@@ -17,6 +17,7 @@ class CreateCitiesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->text('description');
+            $table->string('cover_image')->nullable()->default('cover.jpg');
             $table->timestamps();
         });
     }

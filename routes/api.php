@@ -19,11 +19,13 @@ Route::get('cities/{id}', 'CitiesController@show');
 Route::post('add/city', 'CitiesController@store');
 Route::put('update/city/{id}', 'CitiesController@update');
 Route::delete('delete/city/{id}', 'CitiesController@destroy');
+Route::get('images/cities', 'CitiesController@cityCoverImage');
 
 /* Users API */
 Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@login');
 Route::get('profile', 'UserController@getAuthenticatedUser');
+Route::get('images/user', 'UserController@userProfileImage');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
