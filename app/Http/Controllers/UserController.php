@@ -17,6 +17,10 @@ use DB;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    }
     public function register(Request $request)
     {
         $validData = $request->validate([
@@ -41,7 +45,11 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $login = request()->input('identity');
+
+        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        request()->merge([$field => $login]);
+        $credentials = $request->only($field, 'password');
         
         try {
             if (!$token = JWTAuth::attempt($credentials)) {

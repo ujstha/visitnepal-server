@@ -15,7 +15,7 @@ class CreateCitiesTable extends Migration
     {
         Schema::create('cities', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name')->unique();
+            $table->string('city_name')->unique();
             $table->text('description');
             $table->string('cover_image')->nullable()->default('cover.jpg');
             $table->timestamps();

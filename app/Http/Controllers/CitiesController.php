@@ -25,7 +25,7 @@ class CitiesController extends Controller
     public function store(Request $request)
     {
         $validData = $request->validate([
-            'name' => 'required|unique:cities',
+            'name' => 'required|alpha|unique:cities',
             'description' => 'required',
             'cover_image' => 'image|nullable|max:1999'
         ]);
@@ -43,12 +43,12 @@ class CitiesController extends Controller
             // Upload Image
             $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
         } else {
-            $fileNameToStore = 'noimage.jpg';
+            $fileNameToStore = 'cover.jpg';
         }
 
         if ($validData) {
             $city = new City;
-            $city->name = $request->input('name');
+            $city->name = $request->input('city_name');
             $city->description = $request->input('description');
             $city->cover_image = $fileNameToStore;
             $city->save();
