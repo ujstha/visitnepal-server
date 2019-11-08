@@ -23,12 +23,21 @@ class UserController extends Controller
     }
     public function register(Request $request)
     {
+        $messages = [
+            'identity.required' => 'Email or username cannot be empty',
+            'email.unique' => 'Email or username already registered',
+            'username.unique' => 'Username is already registered',
+            'password.required' => 'Password cannot be empty',
+            'password_confirmation.required' => 'Confirm Password cannot be empty',
+            'password.confirmed' => 'Passwords did not match.',
+        ];
         $validData = $request->validate([
             'username' => 'required|string|unique:users',
             'email' => 'required|email|unique:users',
-            'password' => 'required|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|min:8|confirmed',
+            'password' => 'required|min:8|confirmed',
+            // regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/
             'password_confirmation' => 'required'
-        ]);
+        ], $messages);
 
         if ($validData) {
             $user = new User;
@@ -45,10 +54,11 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
+        //checking if user has send email type or text type through input identity
         $login = request()->input('identity');
-
         $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
         request()->merge([$field => $login]);
+
         $credentials = $request->only($field, 'password');
         
         try {

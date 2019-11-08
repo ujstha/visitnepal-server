@@ -25,7 +25,7 @@ class CitiesController extends Controller
     public function store(Request $request)
     {
         $validData = $request->validate([
-            'name' => 'required|alpha|unique:cities',
+            'city_name' => 'required|alpha|unique:cities',
             'description' => 'required',
             'cover_image' => 'image|nullable|max:1999'
         ]);
@@ -48,12 +48,12 @@ class CitiesController extends Controller
 
         if ($validData) {
             $city = new City;
-            $city->name = $request->input('city_name');
+            $city->city_name = $request->input('city_name');
             $city->description = $request->input('description');
             $city->cover_image = $fileNameToStore;
             $city->save();
     
-            return response()->json(['message' => 'Data Inserted Successfully']);
+            return response()->json(['message' => "City's Data Inserted Successfully"]);
         } 
     }
 
@@ -66,12 +66,12 @@ class CitiesController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'city_name' => 'required|alpha',
             'description' => 'required'
         ]);
 
         $city = City::findOrFail($id);
-        $city->name = $request->input('name');
+        $city->city_name = $request->input('city_name');
         $city->description = $request->input('description');
         $city->save();
 
