@@ -19,7 +19,6 @@ class CreatePersonalDetailsTable extends Migration
             $table->string('lastname')->nullable();
             $table->string('country')->nullable();
             $table->string('city')->nullable();
-            $table->string('profile_image')->default('profile.jpg');
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
