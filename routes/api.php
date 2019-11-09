@@ -32,4 +32,7 @@ Route::get('images/cities', 'CitiesController@cityCoverImage');
 
 /* Categories API belong to City */
 Route::post('add/category/{id}', 'CategoryController@store');
-
+Route::get('categories/with_city={city_id}', 'CategoryController@index');
+Route::get('categories/show/{id}', 'CategoryController@show');
+Route::put('update/category/{id}', 'CategoryController@update');
+Route::delete('delete/category/{id}', 'CategoryController@destroy');
