@@ -22,6 +22,12 @@ Route::get('images/user', 'UserController@userProfileImage');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+/* User Details API */
+Route::post('add/details/{id}', 'UserDetailsController@store');
+Route::get('details/with_user={city_id}', 'UserDetailsController@index');
+Route::put('update/details/{id}', 'UserDetailsController@update');
+
 /* Cities API */
 Route::get('cities', 'CitiesController@index');
 Route::get('cities/{id}', 'CitiesController@show');

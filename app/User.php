@@ -11,6 +11,16 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
+    public function userDetails() 
+    {
+        return $this->hasMany('App\UserDetails');
+    }
+
+    public function userImages() 
+    {
+        return $this->hasMany('App\UserImages');
+    }
+
     protected $fillable = [
         'username', 'email', 'password', 'password_confirmation',
     ];
