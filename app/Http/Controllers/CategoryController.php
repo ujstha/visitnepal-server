@@ -50,7 +50,7 @@ class CategoryController extends Controller
         $category->category_name = $request->input('category_name');
         $category->save();
 
-        return response()->json(['message' => 'Data with an ID of '.$id.' was Updated Successfully']);
+        return response()->json(['message' => 'Category with an ID of '.$id.' was Updated Successfully']);
     }
 
     public function destroy($id)
@@ -58,6 +58,6 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $category->delete();
 
-        return response()->json(['message' => 'Data with an ID of '.$id.' was Deleted Successfully']);
+        return response()->json(['message' => 'Category with an ID of '.$id.' was Deleted Successfully']);
     }
 }

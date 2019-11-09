@@ -75,7 +75,7 @@ class CitiesController extends Controller
         $city->description = $request->input('description');
         $city->save();
 
-        return response()->json(['message' => 'Data with an ID of '.$id.' was Updated Successfully']);
+        return response()->json(['message' => 'City with an ID of '.$id.' was Updated Successfully']);
     }
 
     public function destroy($id)
@@ -83,7 +83,7 @@ class CitiesController extends Controller
         $city = City::findOrFail($id);
         $city->delete();
 
-        return response()->json(['message' => 'Data with an ID of '.$id.' was Deleted Successfully']);
+        return response()->json(['message' => 'City with an ID of '.$id.' was Deleted Successfully']);
     }
 
     /* Working function for getting specific data with id
