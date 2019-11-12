@@ -13,12 +13,12 @@ class User extends Authenticatable implements JWTSubject
 
     public function userDetails() 
     {
-        return $this->hasMany('App\UserDetails');
+        return $this->hasOne('App\UserDetails');
     }
 
     public function userImages() 
     {
-        return $this->hasMany('App\UserImages');
+        return $this->hasOne('App\UserImages');
     }
 
     protected $fillable = [
