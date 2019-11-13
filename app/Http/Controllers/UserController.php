@@ -17,10 +17,11 @@ use DB;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
-    }
+    //using jwt auth verification so this is not required
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    // }
     public function register(Request $request)
     {
         $messages = [
