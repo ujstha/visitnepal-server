@@ -49,7 +49,8 @@ class UserController extends Controller
             $user->save();
             $token = JWTAuth::fromUser($user);
         
-            return response()->json(['message' => 'Registration Successful', compact('user', 'token')], 201);
+            // return response()->json(['message' => 'Registration Successful', compact('user', 'token')], 201);
+            return response()->json(['success' => true, 'message' => 'Registration Successful', 'user' => $user, 'token' => $token], 201);
         }
     }
 
@@ -69,7 +70,7 @@ class UserController extends Controller
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
-        return response()->json(compact('token'));
+        return response()->json(['success' => true, 'token'=> $token]);
     }
 
     public function getAuthenticatedUser()

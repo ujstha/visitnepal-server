@@ -21,7 +21,7 @@ Route::get('images/user', 'UserController@userProfileImage');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::group(['middleware' => ['jwt.verify:1']], function() {
+Route::group(['middleware' => ['jwt.verify:1,0']], function() {
     Route::get('profile', 'UserController@getAuthenticatedUser');
 });
 
