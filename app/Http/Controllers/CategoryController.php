@@ -21,7 +21,7 @@ class CategoryController extends Controller
     public function store(Request $request, $id)
     {
         $validData = $request->validate([
-            'category_name' => 'required|alpha',
+            'category_name' => 'required|string',
         ]);
 
         if ($validData) {
@@ -43,7 +43,7 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'category_name' => 'required|alpha',
+            'category_name' => 'required|string',
         ]);
 
         $category = Category::findOrFail($id);

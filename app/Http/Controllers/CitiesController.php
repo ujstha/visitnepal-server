@@ -25,36 +25,18 @@ class CitiesController extends Controller
     public function store(Request $request)
     {
         $validData = $request->validate([
-            'city_name' => 'required|alpha|unique:cities',
-            'description' => 'required',
-            'cover_image' => 'image|nullable|max:1999'
+            'city_name' => 'required|string|unique:cities',
+            'description' => 'required'
         ]);
-
-         // Handle File Upload
-         if($request->hasFile('cover_image')){
-            // Get filename with the extension
-            $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
-            // Get just filename
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            // Get just ext
-            $extension = $request->file('cover_image')->getClientOriginalExtension();
-            // Filename to store
-            $fileNameToStore= $filename.'_'.time().'.'.$extension;
-            // Upload Image
-            $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
-        } else {
-            $fileNameToStore = 'cover.jpg';
-        }
 
         if ($validData) {
             $city = new City;
             $city->city_name = $request->input('city_name');
             $city->description = $request->input('description');
-            $city->cover_image = $fileNameToStore;
             $city->save();
     
             return response()->json(['message' => "City's Data Inserted Successfully"]);
-        } 
+        }
     }
 
     public function show($id)
@@ -66,13 +48,14 @@ class CitiesController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'city_name' => 'required|alpha',
+            'city_name' => 'required|string',
             'description' => 'required'
         ]);
-
+    
         $city = City::findOrFail($id);
         $city->city_name = $request->input('city_name');
         $city->description = $request->input('description');
+        
         $city->save();
 
         return response()->json(['message' => 'City with an ID of '.$id.' was Updated Successfully']);
@@ -92,13 +75,8 @@ class CitiesController extends Controller
     // {
     //     $cities = DB::select('SELECT * FROM cities WHERE id='.$id.'');
     //     return $cities;
-       
+
     // }
 
     */
-
-    public function cityCoverImage()
-    {
-        echo url("/storage/cover_images");
-    }
 }

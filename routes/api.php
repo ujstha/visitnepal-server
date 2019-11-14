@@ -29,7 +29,7 @@ Route::group(['middleware' => ['jwt.verify:0,1']], function () {
 });
 
 /* User Details API */
-Route::get('details/with_user={user_id}', 'UserDetailsController@index');
+Route::get('user/details/with_user={user_id}', 'UserDetailsController@index');
 
 Route::group(['middleware' => ['jwt.verify:1']], function () {
     Route::post('add/page', 'PagesController@store');
@@ -38,9 +38,9 @@ Route::group(['middleware' => ['jwt.verify:1']], function () {
 });
 
 /* User Images API */
-Route::get('image/with_user={user_id}', 'UserImagesController@index');
-Route::post('add/image/with_user={id}', 'UserImagesController@store');
-Route::put('update/image/{id}', 'UserImagesController@update');
+Route::get('user/image/with_user={user_id}', 'UserImagesController@index');
+Route::post('user/add/image/with_user={user_id}', 'UserImagesController@store');
+Route::put('user/update/image/{id}', 'UserImagesController@update');
 
 /* Page API */
 Route::get('pages', 'PagesController@index');
@@ -60,3 +60,8 @@ Route::get('categories/show/{id}', 'CategoryController@show');
 Route::post('add/category/{id}', 'CategoryController@store');
 Route::put('update/category/{id}', 'CategoryController@update');
 Route::delete('delete/category/{id}', 'CategoryController@destroy');
+
+/* Cities Images API */
+Route::get('city/image/with_city={city_id}', 'CitiesImagesController@index');
+Route::post('city/add/image/{city_id}', 'CitiesImagesController@store');
+Route::put('city/update/image/{id}', 'CitiesImagesController@update');

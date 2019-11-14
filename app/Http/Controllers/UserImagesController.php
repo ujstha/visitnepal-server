@@ -11,11 +11,11 @@ class UserImagesController extends Controller
 {
     public function index($user_id)
     {
-        $userImages = UserImages::orderBy('created_at','desc')->where('user_id', $user_id)->get();
+        $userImages = UserImages::orderBy('created_at', 'desc')->where('user_id', $user_id)->get();
         return $userImages;
     }
 
-    public function store(Request $request, $id)
+    public function store(Request $request, $user_id)
     {
         $validData = $request->validate([
             'profile_image' => 'image|nullable|max:1999999'
@@ -40,11 +40,10 @@ class UserImagesController extends Controller
         if ($validData) {
             $userImages = new UserImages;
             $userImages->profile_image = $fileNameToStore;
-            $userImages->user_id = $id;
+            $userImages->user_id = $user_id;
             $userImages->save();
     
             return response()->json(['message' => "Profile Image Inserted Successfully"]);
         }
     }
-
 }

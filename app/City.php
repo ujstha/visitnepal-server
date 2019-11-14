@@ -10,4 +10,9 @@ class City extends Model
     {
         return $this->hasMany('App\Category');
     }
+
+    public function citiesImages() 
+    {
+        return $this->hasMany('App\CitiesImage');
+    }
 }
