@@ -17,25 +17,34 @@ use Illuminate\Http\Request;
 Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@login');
 Route::get('images/user', 'UserController@userProfileImage');
+Route::post('reset/{email}', 'UserController@resetPassword');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::group(['middleware' => ['jwt.verify:1,0']], function() {
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+Route::group(['middleware' => ['jwt.verify:0,1']], function () {
     Route::get('profile', 'UserController@getAuthenticatedUser');
+    Route::post('add/details/{id}', 'UserDetailsController@store');
+    Route::put('update/details/{id}', 'UserDetailsController@update');
 });
 
 /* User Details API */
 Route::get('details/with_user={user_id}', 'UserDetailsController@index');
-Route::post('add/details/{id}', 'UserDetailsController@store');
-Route::put('update/details/{id}', 'UserDetailsController@update');
+
+Route::group(['middleware' => ['jwt.verify:1']], function () {
+    Route::post('add/page', 'PagesController@store');
+    Route::put('update/page/{id}', 'PagesController@update');
+    Route::delete('delete/page/{id}', 'PagesController@destroy');
+});
+
+/* User Images API */
+Route::get('image/with_user={user_id}', 'UserImagesController@index');
+Route::post('add/image/with_user={id}', 'UserImagesController@store');
+Route::put('update/image/{id}', 'UserImagesController@update');
 
 /* Page API */
 Route::get('pages', 'PagesController@index');
 Route::get('page/{id}', 'PagesController@show');
-Route::post('add/page', 'PagesController@store');
-Route::put('update/page/{id}', 'PagesController@update');
-Route::delete('delete/page/{id}', 'PagesController@destroy');
 
 /* Cities API */
 Route::get('cities', 'CitiesController@index');

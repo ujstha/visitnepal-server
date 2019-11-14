@@ -18,7 +18,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function userImages() 
     {
-        return $this->hasOne('App\UserImages');
+        return $this->hasMany('App\UserImages');
     }
 
     protected $fillable = [

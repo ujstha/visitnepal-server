@@ -29,6 +29,7 @@ class UserController extends Controller
             'email.unique' => 'Email or username already registered',
             'username.unique' => 'Username is already registered',
             'password.required' => 'Password cannot be empty',
+            'password.min' => 'Password must be of atleast 8 characters.',
             'password_confirmation.required' => 'Confirm Password cannot be empty',
             'password.confirmed' => 'Passwords did not match.',
         ];
@@ -88,6 +89,33 @@ class UserController extends Controller
         }
 
         return response()->json(compact('user'));
+    }
+
+    public function resetPassword(Request $request, $email)
+    {
+        $messages = [
+            'password.required' => 'Password cannot be empty',
+            'password.min' => 'Password must be of atleast 8 characters.',
+            'password_confirmation.required' => 'Confirm Password cannot be empty',
+            'password.confirmed' => 'Passwords did not match.',
+        ];
+        $validData = $this->validate($request, [
+            'password' => 'required|min:8|confirmed',
+            'password_confirmation' => 'required'
+        ], $messages);
+
+        $user = User::where('email', $email)->first();
+
+        if ($user && $validData) {
+            $user->password = Hash::make($request->input('password'));
+            $user->password_confirmation = Hash::make($request->input('password_confirmation'));
+            $user->save();
+            $token = JWTAuth::fromUser($user);
+
+            return response()->json(['email_exist' => true, 'message' => 'Password reset Successful']);
+        } else {
+            return response()->json(['email_exist' => false, 'error' => 'Given email does not exist. Please check your email.']);
+        }
     }
 
     public function userProfileImage()
