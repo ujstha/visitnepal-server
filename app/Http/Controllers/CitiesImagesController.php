@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Storage;
 use App\CitiesImage;
-use File;
 
 class CitiesImagesController extends Controller
 {
