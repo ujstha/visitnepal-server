@@ -30,9 +30,13 @@ class CommentsController extends Controller
      */
     public function store(Request $request, $city_id, $user_id)
     {
+        $messages = [
+            'comment.required' => 'Empty comments are not allowed.'
+        ];
+
         $validData = $request->validate([
             'comment' => 'required|string',
-        ]);
+        ], $messages);
 
         if ($validData) {
             $comment = new Comment;
@@ -60,26 +64,33 @@ class CommentsController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $user_id)
     {
-        //
+        $messages = [
+            'comment.required' => 'Empty comments are not allowed.'
+        ];
+
+        $validData = $request->validate([
+            'comment' => 'required|string',
+        ], $messages);
+
+        $comment = Comment::findOrFail($id);
+
+        if ($validData && $comment->user_id == $user_id) {
+            
+            $comment->comment = $request->input('comment');
+            $comment->save();
+
+            return response()->json(['success' => true, 'message' => 'Comment Updated Successfully.']);
+        } else {
+            return response()->json(['success' => false, 'error' => 'Comment update unsuccessful. You are not authorized to edit this comment.']);
+        }
     }
 
     /**

@@ -68,3 +68,4 @@ Route::post('city/add/image/{city_id}', 'CitiesImagesController@store');
 /* Comments API */
 Route::get('comments', 'CommentsController@index');
 Route::post('add/comment/on_city={city_id}/by_user={user_id}', 'CommentsController@store');
+Route::put('update/comment/with_id={id}/by_user={user_id}', 'CommentsController@update');
