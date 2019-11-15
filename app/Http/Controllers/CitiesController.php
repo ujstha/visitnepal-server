@@ -26,12 +26,14 @@ class CitiesController extends Controller
     {
         $validData = $request->validate([
             'city_name' => 'required|string|unique:cities',
+            'country' => 'nullable|string',
             'description' => 'required'
         ]);
 
         if ($validData) {
             $city = new City;
             $city->city_name = $request->input('city_name');
+            $city->country = $request->input('country');
             $city->description = $request->input('description');
             $city->save();
     
@@ -42,6 +44,7 @@ class CitiesController extends Controller
     public function show($id)
     {
         $city = City::findOrFail($id);
+        $update = DB::table('cities')->where('id', $id)->update(['visit_count' => ($city->visit_count + 1)]);
         return $city;
     }
 
@@ -49,11 +52,13 @@ class CitiesController extends Controller
     {
         $this->validate($request, [
             'city_name' => 'required|string',
+            'country' => 'nullable|string',
             'description' => 'required'
         ]);
     
         $city = City::findOrFail($id);
         $city->city_name = $request->input('city_name');
+        $city->country = $request->input('country');
         $city->description = $request->input('description');
         
         $city->save();

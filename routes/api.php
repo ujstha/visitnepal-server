@@ -64,3 +64,7 @@ Route::delete('delete/category/{id}', 'CategoryController@destroy');
 /* Cities Images API */
 Route::get('city/image/with_city={city_id}', 'CitiesImagesController@index');
 Route::post('city/add/image/{city_id}', 'CitiesImagesController@store');
+
+/* Comments API */
+Route::get('comments', 'CommentsController@index');
+Route::post('add/comment/on_city={city_id}/by_user={user_id}', 'CommentsController@store');

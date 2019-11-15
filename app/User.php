@@ -21,6 +21,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany('App\UserImages');
     }
 
+    public function comments() 
+    {
+        return $this->hasMany('App\Comment');
+    }
+
     protected $fillable = [
         'username', 'email', 'password', 'password_confirmation',
     ];

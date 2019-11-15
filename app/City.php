@@ -15,4 +15,9 @@ class City extends Model
     {
         return $this->hasMany('App\CitiesImage');
     }
+
+    public function comments() 
+    {
+        return $this->hasMany('App\Comment');
+    }
 }
