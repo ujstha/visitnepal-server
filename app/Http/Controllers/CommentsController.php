@@ -53,17 +53,6 @@ class CommentsController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -99,8 +88,15 @@ class CommentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, $user_id)
     {
-        //
+        $comment = Comment::findOrFail($id);
+        if ($comment->user_id == $user_id) {
+            $comment->delete();
+
+            return response()->json(['message' => 'Your comment was deleted successfully.']);
+        } else {
+            return response()->json(['message' => 'You are unauthorized to delete this comment.']);
+        }
     }
 }
