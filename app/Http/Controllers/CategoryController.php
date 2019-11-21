@@ -11,7 +11,12 @@ use DB;
 
 class CategoryController extends Controller
 {
-    public function index($city_id)
+    public function index() 
+    {
+        $categories = Category::all();
+        return $categories;
+    }
+    public function getCategoryByCityId($city_id)
     {
         // $cities = DB::select('SELECT * FROM cities');
         $categories = Category::where('city_id', $city_id)->get();
@@ -22,11 +27,13 @@ class CategoryController extends Controller
     {
         $validData = $request->validate([
             'category_name' => 'required|string',
+            'details' => 'string'
         ]);
 
         if ($validData) {
             $category = new Category;
             $category->category_name = $request->input('category_name');
+            $category->details = $request->input('details');
             $category->city_id = $id;
             $category->save();
 

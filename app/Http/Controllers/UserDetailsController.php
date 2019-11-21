@@ -11,7 +11,12 @@ use DB;
 
 class UserDetailsController extends Controller
 {
-    public function index($user_id)
+    public function index()
+    {
+        $details = UserDetails::all();
+        return $details;
+    }
+    public function getDetailsByUserId($user_id)
     {
         $details = UserDetails::where('user_id', $user_id)->get();
         return $details;

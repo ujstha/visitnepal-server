@@ -8,7 +8,12 @@ use App\CitiesImage;
 
 class CitiesImagesController extends Controller
 {
-    public function index($city_id)
+    public function index()
+    {
+        $citiesImages = CitiesImage::all();
+        return $citiesImages;
+    }
+    public function getImagesByCityId($city_id)
     {
         $citiesImages = CitiesImage::orderBy('created_at', 'desc')->where('city_id', $city_id)->get();
         return $citiesImages;

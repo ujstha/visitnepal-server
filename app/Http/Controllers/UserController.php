@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\UserImages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -26,7 +27,7 @@ class UserController extends Controller
     {
         $messages = [
             'identity.required' => 'Email or username cannot be empty',
-            'email.unique' => 'Email or username already registered',
+            'email.unique' => 'Email is already registered',
             'username.unique' => 'Username is already registered',
             'password.required' => 'Password cannot be empty',
             'password.min' => 'Password must be of atleast 8 characters.',
@@ -49,6 +50,12 @@ class UserController extends Controller
             $user->password_confirmation = Hash::make($request->input('password_confirmation'));
             $user->save();
             $token = JWTAuth::fromUser($user);
+            
+            /*adding default profile pictures */
+            $userImages = new UserImages;
+            $userImages->profile_image = "profile.jpg";
+            $userImages->user_id = $user->id;
+            $userImages->save();
         
             // return response()->json(['message' => 'Registration Successful', compact('user', 'token')], 201);
             return response()->json(['success' => true, 'message' => 'Registration Successful', 'user' => $user, 'token' => $token], 201);
@@ -118,8 +125,8 @@ class UserController extends Controller
         }
     }
 
-    public function userProfileImage()
-    {
-        echo url("/storage/profile_images/");
-    }
+//     public function userProfileImage()
+//     {
+//         echo url("/storage/profile_images/");
+//     }
 }

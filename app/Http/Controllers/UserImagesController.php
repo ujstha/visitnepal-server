@@ -9,9 +9,14 @@ use App\UserImages;
 
 class UserImagesController extends Controller
 {
-    public function index($user_id)
+    public function index()
     {
-        $userImages = UserImages::orderBy('created_at', 'desc')->where('user_id', $user_id)->get();
+        $userImages = UserImages::all();
+        return $userImages;
+    }
+    public function getImagesByUserId($user_id)
+    {
+        $userImages = UserImages::orderBy('created_at', 'asc')->where('user_id', $user_id)->get();
         return $userImages;
     }
 

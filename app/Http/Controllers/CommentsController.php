@@ -96,7 +96,7 @@ class CommentsController extends Controller
 
             return response()->json(['message' => 'Your comment was deleted successfully.']);
         } else {
-            return response()->json(['message' => 'You are unauthorized to delete this comment.']);
+            return response()->json(['error' => 'You are unauthorized to delete this comment.']);
         }
     }
 }
