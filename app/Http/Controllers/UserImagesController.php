@@ -51,4 +51,40 @@ class UserImagesController extends Controller
             return response()->json(['message' => "Profile Image Inserted Successfully"]);
         }
     }
+
+    public function update(Request $request, $id, $user_id)
+    {
+        $userImages = UserImages::findOrFail($id);
+
+        $validData = $request->validate([
+            'profile_image' => 'image|nullable|max:1999999'
+        ]);
+
+        // Handle File Upload
+        if ($request->hasFile('profile_image')) {
+            // Get filename with the extension
+            $filenameWithExt = $request->file('profile_image')->getClientOriginalName();
+            // Get just filename
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            // Get just ext
+            $extension = $request->file('profile_image')->getClientOriginalExtension();
+            // Filename to store
+            $fileNameToStore= $filename.'_'.time().'.'.$extension;
+            // Upload Image
+            $path = $request->file('profile_image')->storeAs('public/profile_images', $fileNameToStore);
+            //Delete existing files
+            Storage::delete('public/profile_images/'.$userImages->profile_image);
+        }
+
+        if ($validData && $userImages->user_id == $user_id) {
+            if ($request->hasFile('profile_image')) {
+                $userImages->profile_image = $fileNameToStore;
+            }
+            $userImages->save();
+        
+            return response()->json(['message' => "profile Image Updated Successfully"]);
+        } else {
+            return response()->json(['error' => "Profile Image update unsuccessful.  You are not authorized to edit this image."]);
+        }
+    }
 }

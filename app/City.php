@@ -13,7 +13,7 @@ class City extends Model
 
     public function citiesImages() 
     {
-        return $this->hasMany('App\CitiesImage');
+        return $this->hasOne('App\CitiesImage');
     }
 
     public function comments() 

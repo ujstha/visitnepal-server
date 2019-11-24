@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Storage;
 use App\CitiesImage;
 
 class CitiesImagesController extends Controller
@@ -48,6 +49,42 @@ class CitiesImagesController extends Controller
             $citiesImages->save();
     
             return response()->json(['message' => "Cover Image Inserted Successfully"]);
+        }
+    }
+
+    public function update(Request $request, $id, $city_id)
+    {
+        $citiesImages = CitiesImage::findOrFail($id);
+
+        $validData = $request->validate([
+            'cover_image' => 'image|nullable|max:1999999'
+        ]);
+
+        // Handle File Upload
+        if ($request->hasFile('cover_image')) {
+            // Get filename with the extension
+            $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+            // Get just filename
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            // Get just ext
+            $extension = $request->file('cover_image')->getClientOriginalExtension();
+            // Filename to store
+            $fileNameToStore= $filename.'_'.time().'.'.$extension;
+            // Upload Image
+            $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+            //Delete existing files
+            Storage::delete('public/cover_images/'.$citiesImages->cover_image);
+        }
+
+        if ($validData && $citiesImages->city_id == $city_id) {
+            if ($request->hasFile('cover_image')) {
+                $citiesImages->cover_image = $fileNameToStore;
+            }
+            $citiesImages->save();
+        
+            return response()->json(['message' => "Cover Image Updated Successfully"]);
+        } else {
+            return response()->json(['error' => "Cover Image update unsuccessful. Wrong city_id was provided."]);
         }
     }
 }

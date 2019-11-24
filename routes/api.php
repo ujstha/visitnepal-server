@@ -26,7 +26,7 @@ Route::group(['middleware' => ['jwt.verify:0,1']], function () {
     Route::post('user/add/details/{id}', 'UserDetailsController@store');
     Route::put('user/update/details/{id}', 'UserDetailsController@update');
     Route::post('user/add/images/with_user={user_id}', 'UserImagesController@store');
-    Route::put('user/update/images/{id}', 'UserImagesController@update');
+    Route::post('user/update/images/with_id={id}/with_user={user_id}', 'UserImagesController@update');
 });
 
 /* User Details API */
@@ -66,9 +66,16 @@ Route::delete('delete/category/{id}', 'CategoryController@destroy');
 Route::get('city/images/all', 'CitiesImagesController@index');
 Route::get('city/image/with_city={city_id}', 'CitiesImagesController@getImagesByCityId');
 Route::post('city/add/image/{city_id}', 'CitiesImagesController@store');
+Route::post('city/update/image/with_id={id}/with_city={city_id}', 'CitiesImagesController@update');
 
 /* Comments API */
 Route::get('comments', 'CommentsController@index');
 Route::post('add/comment/on_city={city_id}/by_user={user_id}', 'CommentsController@store');
 Route::put('update/comment/with_id={id}/by_user={user_id}', 'CommentsController@update');
 Route::delete('delete/comment/with_id={id}/by_user={user_id}', 'CommentsController@destroy');
+
+/* Slider API */
+Route::get('slider', 'SliderController@index');
+Route::post('add/slides', 'SliderController@store');
+Route::post('update/slide/with_id={id}', 'SliderController@update');
+Route::delete('delete/slide/with_id={id}', 'SliderController@destroy');
