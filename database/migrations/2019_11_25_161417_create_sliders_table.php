@@ -17,8 +17,9 @@ class CreateSlidersTable extends Migration
             $table->bigIncrements('id');
             $table->string('caption');
             $table->string('link')->nullable();
-            $table->string('slides');
+            $table->string('slides')->nullable();
             $table->string('status')->default('active');
+            $table->timestamps();
         });
     }
 

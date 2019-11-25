@@ -17,7 +17,7 @@ class CreateCitiesTable extends Migration
             $table->bigIncrements('id');
             $table->string('city_name')->unique();
             $table->string('country')->nullable();
-            $table->text('description');
+            $table->longText('description');
             $table->integer('visit_count')->default(0);
             $table->integer('comment_count')->default(0);
             $table->integer('rating_count')->default(0);

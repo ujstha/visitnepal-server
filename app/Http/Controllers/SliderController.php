@@ -21,8 +21,7 @@ class SliderController extends Controller
         $validData = $request->validate([
             'caption' => 'string',
             'link' => 'string',
-            'slides' => 'image|nullable|max:1999999',
-            'status' => 'string'
+            'slides' => 'image|nullable|max:1999999'
         ]);
 
         // Handle File Upload
@@ -46,7 +45,11 @@ class SliderController extends Controller
             $sliders->caption = $request->input('caption');
             $sliders->link = $request->input('link');
             $sliders->slides = $fileNameToStore;
-            $sliders->status = $request->input('status');
+            if ($request->input('status') != "") {
+                $sliders->status = $request->input('status');
+            } else {
+                $sliders->status = 'active';
+            }
             $sliders->save();
     
             return response()->json(['message' => "Slider's Data inserted successfully.", 'sliders' => $sliders]);
@@ -60,7 +63,7 @@ class SliderController extends Controller
         $request->validate([
             'caption' => 'string',
             'link' => 'string',
-            'slides' => 'image|nullable|max:1999999',
+            'slides' => 'nullable|max:1999999',
             'status' => 'string'
         ]);
 
@@ -78,12 +81,16 @@ class SliderController extends Controller
             $path = $request->file('slides')->storeAs('public/slider_images', $fileNameToStore);
             //Delete existing files
             Storage::delete('public/slider_images/'.$sliders->slides);
+        } else {
+            $prevImage = $sliders->slides;
         }
 
         $sliders->caption = $request->input('caption');
         $sliders->link = $request->input('link');
         if ($request->hasFile('slides')) {
             $sliders->slides = $fileNameToStore;
+        } else {
+            $sliders->slides = $prevImage;
         }
         $sliders->status = $request->input('status');
         $sliders->save();
