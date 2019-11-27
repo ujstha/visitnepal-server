@@ -57,7 +57,7 @@ class UserImagesController extends Controller
         $userImages = UserImages::findOrFail($id);
 
         $validData = $request->validate([
-            'profile_image' => 'image|nullable|max:1999999'
+            'profile_image' => 'nullable|max:1999999'
         ]);
 
         // Handle File Upload
@@ -74,11 +74,15 @@ class UserImagesController extends Controller
             $path = $request->file('profile_image')->storeAs('public/profile_images', $fileNameToStore);
             //Delete existing files
             Storage::delete('public/profile_images/'.$userImages->profile_image);
+        } else {
+            $prevImage = $userImages->profile_image;
         }
 
         if ($validData && $userImages->user_id == $user_id) {
             if ($request->hasFile('profile_image')) {
                 $userImages->profile_image = $fileNameToStore;
+            } else {
+                $userImages->profile_image = $prevImage;
             }
             $userImages->save();
         

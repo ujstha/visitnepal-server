@@ -57,7 +57,7 @@ class CitiesImagesController extends Controller
         $citiesImages = CitiesImage::findOrFail($id);
 
         $validData = $request->validate([
-            'cover_image' => 'image|nullable|max:1999999'
+            'cover_image' => 'nullable|max:1999999'
         ]);
 
         // Handle File Upload
@@ -74,11 +74,15 @@ class CitiesImagesController extends Controller
             $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
             //Delete existing files
             Storage::delete('public/cover_images/'.$citiesImages->cover_image);
+        } else {
+            $prevImage = $citiesImages->cover_image;
         }
 
         if ($validData && $citiesImages->city_id == $city_id) {
             if ($request->hasFile('cover_image')) {
                 $citiesImages->cover_image = $fileNameToStore;
+            } else {
+                $citiesImages->cover_image = $prevImage;
             }
             $citiesImages->save();
         

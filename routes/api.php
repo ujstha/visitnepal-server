@@ -59,7 +59,7 @@ Route::get('categories/all', 'CategoryController@index');
 Route::get('categories/with_city={city_id}', 'CategoryController@getCategoryByCityId');
 Route::get('categories/show/{id}', 'CategoryController@show');
 Route::post('add/category/{id}', 'CategoryController@store');
-Route::put('update/category/{id}', 'CategoryController@update');
+Route::post('update/category/{id}', 'CategoryController@update');
 Route::delete('delete/category/{id}', 'CategoryController@destroy');
 
 /* Cities Images API */
