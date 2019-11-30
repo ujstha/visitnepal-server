@@ -27,32 +27,14 @@ class CitiesController extends Controller
         $validData = $request->validate([
             'city_name' => 'required|string|unique:cities',
             'country' => 'nullable|string',
-            'description' => 'required',
-            'cover_image' => 'image|nullable|max:1999999'
+            'description' => 'required'
         ]);
-
-        // Handle File Upload
-        if ($request->hasFile('cover_image')) {
-            // Get filename with the extension
-            $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
-            // Get just filename
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            // Get just ext
-            $extension = $request->file('cover_image')->getClientOriginalExtension();
-            // Filename to store
-            $fileNameToStore= $filename.'_'.time().'.'.$extension;
-            // Upload Image
-            $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
-        } else {
-            $fileNameToStore = 'cover.jpg';
-        }
 
         if ($validData) {
             $city = new City;
             $city->city_name = $request->input('city_name');
             $city->country = $request->input('country');
             $city->description = $request->input('description');
-            $citiesImages->cover_image = $fileNameToStore;
             $city->save();
     
             return response()->json(['message' => "City's Data Inserted Successfully"]);
@@ -91,15 +73,10 @@ class CitiesController extends Controller
 
         return response()->json(['message' => 'City with an ID of '.$id.' was Deleted Successfully']);
     }
-
-    /* Working function for getting specific data with id
-
-    // public function showImage($id)
-    // {
-    //     $cities = DB::select('SELECT * FROM cities WHERE id='.$id.'');
-    //     return $cities;
-
-    // }
-
-    */
+    
+    public function count() 
+    {
+        $cities = City::all()->count();
+        return $cities;
+    }
 }

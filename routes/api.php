@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 /* Users API */
+Route::get('users/count', 'UserController@count');
 Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@login');
 Route::post('reset/{email}', 'UserController@resetPassword');
@@ -48,6 +49,7 @@ Route::get('pages', 'PagesController@index');
 Route::get('page/{id}', 'PagesController@show');
 
 /* Cities API */
+Route::get('cities/count', 'CitiesController@count');
 Route::get('cities', 'CitiesController@index');
 Route::get('cities/{id}', 'CitiesController@show');
 Route::post('add/city', 'CitiesController@store');
@@ -70,9 +72,18 @@ Route::post('city/update/image/with_id={id}/with_city={city_id}', 'CitiesImagesC
 
 /* Comments API */
 Route::get('comments', 'CommentsController@index');
+Route::get('comments/with_city_id={city_id}', 'CommentsController@getCommentByCityId');
 Route::post('add/comment/on_city={city_id}/by_user={user_id}', 'CommentsController@store');
 Route::put('update/comment/with_id={id}/by_user={user_id}', 'CommentsController@update');
 Route::delete('delete/comment/with_id={id}/by_user={user_id}', 'CommentsController@destroy');
+
+/* Ratings API */
+Route::get('ratings', 'RatingsController@index');
+Route::get('ratings/with_city_id={city_id}', 'RatingsController@getRatingByCityId');
+Route::get('ratings/avg/with_city_id={city_id}', 'RatingsController@getAvgRatingByCityId');
+Route::post('add/rating/on_city={city_id}/by_user={user_id}', 'RatingsController@store');
+Route::put('update/rating/with_id={id}/by_user={user_id}', 'RatingsController@update');
+Route::delete('delete/rating/with_id={id}/by_user={user_id}', 'RatingsController@destroy');
 
 /* Slider API */
 Route::get('slider', 'SliderController@index');

@@ -22,6 +22,12 @@ class CommentsController extends Controller
         return $comments;
     }
 
+    public function getCommentByCityId($city_id)
+    {
+        $comments = Comment::where('city_id', $city_id)->orderBy('created_at', 'desc')->get();
+        return $comments;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -35,7 +41,7 @@ class CommentsController extends Controller
         ];
 
         $validData = $request->validate([
-            'comment' => 'required|string',
+            'comment' => 'required',
         ], $messages);
 
         if ($validData) {
@@ -66,13 +72,12 @@ class CommentsController extends Controller
         ];
 
         $validData = $request->validate([
-            'comment' => 'required|string',
+            'comment' => 'required',
         ], $messages);
 
         $comment = Comment::findOrFail($id);
 
         if ($validData && $comment->user_id == $user_id) {
-            
             $comment->comment = $request->input('comment');
             $comment->save();
 
