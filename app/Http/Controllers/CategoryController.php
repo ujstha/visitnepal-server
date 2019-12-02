@@ -7,6 +7,7 @@ use Illuminate\Database\QueryException;
 use App\Http\Requests;
 use App\Category;
 use App\Http\Resources\Category as CategoryResource;
+use Illuminate\Support\Facades\Storage;
 use DB;
 
 class CategoryController extends Controller
@@ -37,16 +38,16 @@ class CategoryController extends Controller
             $filenameWithExt = $request->file('category_image')->getClientOriginalName();
             // Get just filename
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $fileName = str_replace(' ', '_', $filename);
             // Get just ext
             $extension = $request->file('category_image')->getClientOriginalExtension();
             // Filename to store
-            $fileNameToStore= $filename.'_'.time().'.'.$extension;
+            $fileNameToStore= $fileName.'_'.time().'.'.$extension;
             // Upload Image
             $path = $request->file('category_image')->storeAs('public/category_images', $fileNameToStore);
         } else {
             $fileNameToStore = 'category.jpg';
         }
-
 
         if ($validData) {
             $category = new Category;
@@ -82,10 +83,11 @@ class CategoryController extends Controller
             $filenameWithExt = $request->file('category_image')->getClientOriginalName();
             // Get just filename
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $fileName = str_replace(' ', '_', $filename);
             // Get just ext
             $extension = $request->file('category_image')->getClientOriginalExtension();
             // Filename to store
-            $fileNameToStore= $filename.'_'.time().'.'.$extension;
+            $fileNameToStore= $fileName.'_'.time().'.'.$extension;
             // Upload Image
             $path = $request->file('category_image')->storeAs('public/category_images', $fileNameToStore);
             //Delete existing files

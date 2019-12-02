@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Storage;
 use App\UserImages;
 
 class UserImagesController extends Controller
@@ -61,27 +62,24 @@ class UserImagesController extends Controller
             'profile_image' => 'nullable|max:1999999'
         ]);
 
-        // Handle File Upload
-        if ($request->hasFile('profile_image')) {
-            // Get filename with the extension
-            $filenameWithExt = $request->file('profile_image')->getClientOriginalName();
-            // Get just filename
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $fileName = str_replace(' ', '_', $filename);
-            // Get just ext
-            $extension = $request->file('profile_image')->getClientOriginalExtension();
-            // Filename to store
-            $fileNameToStore= $fileName.'_'.time().'.'.$extension;
-            // Upload Image
-            $path = $request->file('profile_image')->storeAs('public/profile_images', $fileNameToStore);
-            //Delete existing files
-            Storage::delete('public/profile_images/'.$userImages->profile_image);
-        } else {
-            $prevImage = $userImages->profile_image;
-        }
+        $prevImage = $userImages->profile_image;
 
         if ($validData && $userImages->user_id == $user_id) {
             if ($request->hasFile('profile_image')) {
+                // Get filename with the extension
+                $filenameWithExt = $request->file('profile_image')->getClientOriginalName();
+                // Get just filename
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $fileName = str_replace(' ', '_', $filename);
+                // Get just ext
+                $extension = $request->file('profile_image')->getClientOriginalExtension();
+                // Filename to store
+                $fileNameToStore= $fileName.'_'.time().'.'.$extension;
+                // Upload Image
+                $path = $request->file('profile_image')->storeAs('public/profile_images', $fileNameToStore);
+                //Delete existing files
+                Storage::delete('public/profile_images/'.$userImages->profile_image);
+
                 $userImages->profile_image = $fileNameToStore;
             } else {
                 $userImages->profile_image = $prevImage;

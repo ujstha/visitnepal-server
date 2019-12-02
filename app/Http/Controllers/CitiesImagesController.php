@@ -61,27 +61,24 @@ class CitiesImagesController extends Controller
             'cover_image' => 'nullable|max:1999999'
         ]);
 
-        // Handle File Upload
-        if ($request->hasFile('cover_image')) {
-            // Get filename with the extension
-            $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
-            // Get just filename
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $fileName = str_replace(' ', '_', $filename);
-            // Get just ext
-            $extension = $request->file('cover_image')->getClientOriginalExtension();
-            // Filename to store
-            $fileNameToStore= $fileName.'_'.time().'.'.$extension;
-            // Upload Image
-            $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
-            //Delete existing files
-            Storage::delete('public/cover_images/'.$citiesImages->cover_image);
-        } else {
-            $prevImage = $citiesImages->cover_image;
-        }
+        $prevImage = $citiesImages->cover_image;
 
         if ($validData && $citiesImages->city_id == $city_id) {
             if ($request->hasFile('cover_image')) {
+                // Get filename with the extension
+                $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+                // Get just filename
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $fileName = str_replace(' ', '_', $filename);
+                // Get just ext
+                $extension = $request->file('cover_image')->getClientOriginalExtension();
+                // Filename to store
+                $fileNameToStore= $fileName.'_'.time().'.'.$extension;
+                // Upload Image
+                $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+                //Delete existing files
+                Storage::delete('public/cover_images/'.$citiesImages->cover_image);
+                
                 $citiesImages->cover_image = $fileNameToStore;
             } else {
                 $citiesImages->cover_image = $prevImage;

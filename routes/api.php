@@ -60,9 +60,9 @@ Route::delete('delete/city/{id}', 'CitiesController@destroy');
 Route::get('categories/all', 'CategoryController@index');
 Route::get('categories/with_city={city_id}', 'CategoryController@getCategoryByCityId');
 Route::get('categories/show/{id}', 'CategoryController@show');
-Route::post('add/category/{id}', 'CategoryController@store');
-Route::post('update/category/{id}', 'CategoryController@update');
-Route::delete('delete/category/{id}', 'CategoryController@destroy');
+Route::post('add/category/on_city={city_id}', 'CategoryController@store');
+Route::post('update/category/with_id={id}', 'CategoryController@update');
+Route::delete('delete/category/with_id={id}', 'CategoryController@destroy');
 
 /* Cities Images API */
 Route::get('city/images/all', 'CitiesImagesController@index');
