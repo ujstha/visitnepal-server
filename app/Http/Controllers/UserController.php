@@ -23,6 +23,11 @@ class UserController extends Controller
     // {
     //     $this->middleware('auth:api', ['except' => ['login', 'register']]);
     // }
+    public function getAllUser() 
+    {
+        $allUsers = User::all();
+        return $allUsers;
+    }
 
     public function count() 
     {

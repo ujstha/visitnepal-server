@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 /* Users API */
+Route::get('users/all', 'UserController@getAllUser');
 Route::get('users/count', 'UserController@count');
 Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@login');
@@ -25,7 +26,7 @@ Route::post('reset/{email}', 'UserController@resetPassword');
 Route::group(['middleware' => ['jwt.verify:0,1']], function () {
     Route::get('profile', 'UserController@getAuthenticatedUser');
     Route::post('user/add/details/{id}', 'UserDetailsController@store');
-    Route::put('user/update/details/{id}', 'UserDetailsController@update');
+    Route::post('user/update/details/{id}', 'UserDetailsController@update');
     Route::post('user/add/images/with_user={user_id}', 'UserImagesController@store');
     Route::post('user/update/images/with_id={id}/with_user={user_id}', 'UserImagesController@update');
 });
@@ -40,7 +41,7 @@ Route::get('user/images/with_user={user_id}', 'UserImagesController@getImagesByU
 
 Route::group(['middleware' => ['jwt.verify:1']], function () {
     Route::post('add/page', 'PagesController@store');
-    Route::put('update/page/{id}', 'PagesController@update');
+    Route::post('update/page/{id}', 'PagesController@update');
     Route::delete('delete/page/{id}', 'PagesController@destroy');
 });
 
@@ -53,7 +54,7 @@ Route::get('cities/count', 'CitiesController@count');
 Route::get('cities', 'CitiesController@index');
 Route::get('cities/{id}', 'CitiesController@show');
 Route::post('add/city', 'CitiesController@store');
-Route::put('update/city/{id}', 'CitiesController@update');
+Route::post('update/city/{id}', 'CitiesController@update');
 Route::delete('delete/city/{id}', 'CitiesController@destroy');
 
 /* Categories API belong to City */
@@ -74,7 +75,7 @@ Route::post('city/update/image/with_id={id}/with_city={city_id}', 'CitiesImagesC
 Route::get('comments', 'CommentsController@index');
 Route::get('comments/with_city_id={city_id}', 'CommentsController@getCommentByCityId');
 Route::post('add/comment/on_city={city_id}/by_user={user_id}', 'CommentsController@store');
-Route::put('update/comment/with_id={id}/by_user={user_id}', 'CommentsController@update');
+Route::post('update/comment/with_id={id}/by_user={user_id}', 'CommentsController@update');
 Route::delete('delete/comment/with_id={id}/by_user={user_id}', 'CommentsController@destroy');
 
 /* Ratings API */
@@ -82,7 +83,7 @@ Route::get('ratings', 'RatingsController@index');
 Route::get('ratings/with_city_id={city_id}', 'RatingsController@getRatingByCityId');
 Route::get('ratings/avg/with_city_id={city_id}', 'RatingsController@getAvgRatingByCityId');
 Route::post('add/rating/on_city={city_id}/by_user={user_id}', 'RatingsController@store');
-Route::put('update/rating/with_id={id}/by_user={user_id}', 'RatingsController@update');
+Route::post('update/rating/with_id={id}/by_user={user_id}', 'RatingsController@update');
 Route::delete('delete/rating/with_id={id}/by_user={user_id}', 'RatingsController@destroy');
 
 /* Slider API */
