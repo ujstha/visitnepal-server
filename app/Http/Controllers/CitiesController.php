@@ -73,10 +73,4 @@ class CitiesController extends Controller
 
         return response()->json(['message' => 'City with an ID of '.$id.' was Deleted Successfully']);
     }
-    
-    public function count() 
-    {
-        $cities = City::all()->count();
-        return $cities;
-    }
 }

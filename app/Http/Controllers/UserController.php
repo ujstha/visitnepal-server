@@ -29,11 +29,6 @@ class UserController extends Controller
         return $allUsers;
     }
 
-    public function count() 
-    {
-        $users = User::where('isAdmin', 0)->count();
-        return $users;
-    }
     public function register(Request $request)
     {
         $messages = [

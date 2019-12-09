@@ -50,7 +50,6 @@ Route::get('pages', 'PagesController@index');
 Route::get('page/{id}', 'PagesController@show');
 
 /* Cities API */
-Route::get('cities/count', 'CitiesController@count');
 Route::get('cities', 'CitiesController@index');
 Route::get('cities/{id}', 'CitiesController@show');
 Route::post('add/city', 'CitiesController@store');
@@ -91,3 +90,6 @@ Route::get('slider', 'SliderController@index');
 Route::post('add/slides', 'SliderController@store');
 Route::post('update/slide/with_id={id}', 'SliderController@update');
 Route::delete('delete/slide/with_id={id}', 'SliderController@destroy');
+
+/* Count Visit, Comment, User */
+Route::get('count/all', 'CountController@count');
