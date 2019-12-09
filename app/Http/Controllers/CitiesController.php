@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use App\Http\Requests;
 use App\City;
+use App\CitiesImage;
+use App\Category;
+use App\Rating;
+use App\Comment;
 use App\Http\Resources\City as CityResource;
 use DB;
 
@@ -19,7 +23,11 @@ class CitiesController extends Controller
         // return $cities;
         */
         $cities = City::paginate(5);
-        return CityResource::collection($cities);
+        $getCities = CityResource::collection($cities);
+        $getCityImage = CitiesImage::all();
+        $getCityCategory = Category::all();
+
+        return array('city' => $getCities, 'city_image' => $getCityImage, 'category' => $getCityCategory );
     }
 
     public function store(Request $request)
@@ -45,7 +53,18 @@ class CitiesController extends Controller
     {
         $city = City::findOrFail($id);
         $update = DB::table('cities')->where('id', $id)->update(['visit_count' => ($city->visit_count + 1)]);
-        return $city;
+        $cityImage = CitiesImage::where('city_id', $id)->get();
+        $cityAvgRating = Rating::where('city_id', $id)->avg('rating');
+        $cityRatingCount = Rating::where('city_id', $id)->count();
+        $categoryByCityId = Category::where('city_id', $id)->get();
+        $commentByCityId = Comment::where('city_id', $id)->orderBy('created_at', 'desc')->get();
+        
+        return array('cityById' => $city,
+        'cityImageByCityId' => $cityImage,
+        'categoryByCityId' => $categoryByCityId,
+        'commentByCityId' => $commentByCityId,
+        'rating_count' => $cityRatingCount,
+        'avg_rating' => $cityAvgRating );
     }
 
     public function update(Request $request, $id)

@@ -26,7 +26,9 @@ class UserController extends Controller
     public function getAllUser() 
     {
         $allUsers = User::all();
-        return $allUsers;
+        $userImages = UserImages::all();
+        
+        return array('users' => $allUsers, 'userImages' => $userImages);
     }
 
     public function register(Request $request)
