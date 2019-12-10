@@ -41,7 +41,7 @@ class UserImagesController extends Controller
             // Upload Image
             $path = $request->file('profile_image')->storeAs('public/profile_images', $fileNameToStore);
         } else {
-            $fileNameToStore = 'profile.jpg';
+            $fileNameToStore = 'profile.png';
         }
 
         if ($validData) {

@@ -23,7 +23,7 @@ class UserController extends Controller
     // {
     //     $this->middleware('auth:api', ['except' => ['login', 'register']]);
     // }
-    public function getAllUser() 
+    public function getAllUser()
     {
         $allUsers = User::all();
         $userImages = UserImages::all();
@@ -61,7 +61,7 @@ class UserController extends Controller
             
             /*adding default profile pictures */
             $userImages = new UserImages;
-            $userImages->profile_image = "profile.jpg";
+            $userImages->profile_image = "profile.png";
             $userImages->user_id = $user->id;
             $userImages->save();
         
