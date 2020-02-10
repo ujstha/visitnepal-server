@@ -17,7 +17,7 @@ class UserImagesController extends Controller
     }
     public function getImagesByUserId($user_id)
     {
-        $userImages = UserImages::orderBy('created_at', 'asc')->where('user_id', $user_id)->get();
+        $userImages = UserImages::where('user_id', $user_id)->orderBy('created_at', 'desc')->get();
         return $userImages;
     }
 

@@ -15,7 +15,9 @@ class CreateCitiesTable extends Migration
     {
         Schema::create('cities', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('city_name')->unique();
+            $table->string('place');
+            $table->string('category')->nullable();
+            $table->string('city_name');
             $table->string('country')->nullable();
             $table->longText('description');
             $table->integer('visit_count')->default(0);

@@ -12,6 +12,12 @@ class SliderController extends Controller
 {
     public function index()
     {
+        $sliders = Slider::all();
+        return $sliders;
+    }
+
+    public function activeSlider()
+    {
         $sliders = Slider::where('status', 'active')->get();
         return $sliders;
     }
@@ -56,6 +62,13 @@ class SliderController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        $slider = Slider::findOrFail($id);
+        return array('sliderById' => $slider);
+    }
+
+
     public function update(Request $request, $id)
     {
         $sliders = Slider::findOrFail($id);
@@ -96,6 +109,20 @@ class SliderController extends Controller
         $sliders->save();
 
         return response()->json(['message' => 'Slider with an ID of '.$id.' was Updated Successfully']);
+    }
+
+    public function updateStatus(Request $request, $id, $data)
+    {
+        $slide = Slider::findOrFail($id);
+
+        if ($slide) {
+            $slide->status = $data;
+            $slide->save();
+
+            return response()->json(['message' => 'Status updated.']);
+        } else {
+            return response()->json(['error' => 'ID not found.']);
+        }
     }
 
     /**

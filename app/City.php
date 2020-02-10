@@ -6,18 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class City extends Model
 {
-    public function categories() 
+    public function categories()
     {
         return $this->hasMany('App\Category');
     }
 
-    public function citiesImages() 
+    public function citiesImages()
     {
         return $this->hasOne('App\CitiesImage');
     }
 
-    public function comments() 
+    public function comments()
     {
         return $this->hasMany('App\Comment');
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany('App\Rating');
     }
 }

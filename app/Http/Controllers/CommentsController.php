@@ -104,4 +104,12 @@ class CommentsController extends Controller
             return response()->json(['error' => 'You are unauthorized to delete this comment.']);
         }
     }
+
+    public function adminDestroy($city_id)
+    {
+        $comment = Comment::where('city_id', $city_id);
+        $comment->delete();
+
+        return response()->json(['message' => 'Comment with an city id of '.$city_id.' was Deleted Successfully']);
+    }
 }

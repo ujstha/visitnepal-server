@@ -20,6 +20,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('password_confirmation');
             $table->boolean('isAdmin')->default(false);
+            $table->string('ratedCity')->default('false');
+            $table->bigInteger('city_id')->default(0);
             $table->timestamps();
         });
     }

@@ -115,8 +115,7 @@ class UserController extends Controller
             'password.confirmed' => 'Passwords did not match.',
         ];
         $validData = $this->validate($request, [
-            'password' => 'required|min:8|confirmed',
-            'password_confirmation' => 'required'
+            'password' => 'required|min:8'
         ], $messages);
 
         $user = User::where('email', $email)->first();
@@ -131,6 +130,27 @@ class UserController extends Controller
         } else {
             return response()->json(['email_exist' => false, 'error' => 'Given email does not exist. Please check your email.']);
         }
+    }
+
+
+    public function resetRole(Request $request, $id, $data)
+    {
+        $user = User::findOrFail($id);
+
+        if ($user) {
+            $user->isAdmin = $data;
+            $user->save();
+
+            return response()->json(['message' => 'Role updated.']);
+        } else {
+            return response()->json(['error' => 'ID not found.']);
+        }
+    }
+
+    public function getUserById($id)
+    {
+        $userById = User::findOrFail($id);
+        return $userById;
     }
 
 //     public function userProfileImage()

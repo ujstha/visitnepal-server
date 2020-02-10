@@ -32,7 +32,7 @@ class CitiesImagesController extends Controller
             $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
             // Get just filename
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $fileName = str_replace(' ', '_', $filename);
+            $fileName = str_replace(' ', '_', $city_id);
             // Get just ext
             $extension = $request->file('cover_image')->getClientOriginalExtension();
             // Filename to store
@@ -69,7 +69,7 @@ class CitiesImagesController extends Controller
                 $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
                 // Get just filename
                 $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                $fileName = str_replace(' ', '_', $filename);
+                $fileName = str_replace(' ', '_', $city_id);
                 // Get just ext
                 $extension = $request->file('cover_image')->getClientOriginalExtension();
                 // Filename to store
@@ -89,5 +89,14 @@ class CitiesImagesController extends Controller
         } else {
             return response()->json(['error' => "Cover Image update unsuccessful. Wrong city_id was provided."]);
         }
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $cityImage = CitiesImage::findOrFail($id);
+        Storage::delete('public/cover_images/'.$cityImage->cover_image);
+        $cityImage->delete();
+
+        return response()->json(['message' => 'City and Image with an ID of '.$id.' was Deleted Successfully']);
     }
 }

@@ -31,7 +31,7 @@ class PagesController extends Controller
     public function store(Request $request)
     {
         $validData = $request->validate([
-            'title' => 'alpha',
+            'title' => 'string',
             'body' => 'string'
         ]);
 
@@ -67,7 +67,7 @@ class PagesController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'title' => 'alpha',
+            'title' => 'string',
             'body' => 'string'
         ]);
 

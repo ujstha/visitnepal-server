@@ -7,6 +7,7 @@ use Illuminate\Database\QueryException;
 use App\Http\Requests;
 use App\Rating;
 use App\City;
+use App\User;
 use DB;
 
 class RatingsController extends Controller
@@ -58,7 +59,10 @@ class RatingsController extends Controller
             $rating->save();
 
             $city = City::findOrFail($city_id);
+            $user = User::findOrFail($user_id);
+
             $update = DB::table('cities')->where('id', $city_id)->update(['rating_count' => ($city->rating_count + 1)]);
+            $updateUser = DB::table('users')->where('id', $user_id)->update(['ratedCity' => ($user->ratedCity = 'true'), 'city_id' => ($user->city_id = $city_id)]);
 
             return response()->json(['success' => true, 'message' => 'Rating Successful.']);
         }
@@ -83,7 +87,7 @@ class RatingsController extends Controller
 
         $rating = Rating::findOrFail($id);
 
-        if ($validData && $Rating->user_id == $user_id) {
+        if ($validData && $rating->user_id == $user_id) {
             $rating->rating = $request->input('rating');
             $rating->save();
 
@@ -104,6 +108,7 @@ class RatingsController extends Controller
         $rating = Rating::findOrFail($id);
         if ($rating->user_id == $user_id) {
             $rating->delete();
+            $update = DB::table('cities')->where('id', $city_id)->update(['rating_count' => ($city->rating_count - 1)]);
 
             return response()->json(['message' => 'Your Rating was deleted successfully.']);
         } else {
