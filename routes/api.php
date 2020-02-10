@@ -42,7 +42,8 @@ Route::post('reset/role/{id}/{data}', 'UserController@resetRole');
 
 /* Page API */
 Route::get('pages', 'PagesController@index');
-Route::get('page/{id}', 'PagesController@show');
+Route::get('page/{title}', 'PagesController@showByTitle');
+Route::get('page/pageid/{id}', 'PagesController@show');
 Route::post('add/page', 'PagesController@store');
 Route::post('update/page/{id}', 'PagesController@update');
 Route::delete('delete/page/{id}', 'PagesController@destroy');

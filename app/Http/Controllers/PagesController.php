@@ -37,7 +37,7 @@ class PagesController extends Controller
 
         if ($validData) {
             $page = new Page;
-            $page->title = $request->input('title');
+            $page->title = strtolower($request->input('title'));
             $page->body = $request->input('body');
             $page->save();
 
@@ -51,6 +51,12 @@ class PagesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function showByTitle($title)
+    {
+        $page = Page::where('title', $title)->get();
+        return $page;
+    }
+
     public function show($id)
     {
         $page = Page::findOrFail($id);
@@ -72,7 +78,7 @@ class PagesController extends Controller
         ]);
 
         $page = Page::findOrFail($id);
-        $page->title = $request->input('title');
+        $page->title = strtolower($request->input('title'));
         $page->body = $request->input('body');
         $page->save();
 
